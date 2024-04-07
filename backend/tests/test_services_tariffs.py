@@ -7,18 +7,23 @@ from api.serializers import (ServiceSerializer,
                              PartnerRulesSerializer,
                              PDpolicySerializer,
                              TariffSerializer)
-from .fixture import user, authenticated_client, subscription, tariff
+from .fixture import (user, authenticated_client, subscription, subscriptions,
+                      tariff, tariffs)
 
 
 @pytest.mark.django_db
-def test_subscription_list(subscription, authenticated_client):
+def test_subscription_list(subscriptions, authenticated_client):
     """
     Проверяет, что список подписок возвращается корректно по нужному эндоинту.
     """
-    subscription = subscription
+    subscriptions = subscriptions
     response = authenticated_client.get('/api/v1/services/')
     assert response.status_code == 200
-    assert response.data == ServiceSerializer([subscription], many=True).data
+    response_subscriptions = response.data
+    expected_subscriptions = ServiceSerializer(subscriptions, many=True).data
+    assert len(response_subscriptions) == len(expected_subscriptions)
+    for service in expected_subscriptions:
+        assert service in response_subscriptions
 
 
 @pytest.mark.django_db
@@ -63,14 +68,18 @@ def get_personal_data_policy(subscription, authenticated_client):
 
 
 @pytest.mark.django_db
-def test_tariff_list(tariff, authenticated_client):
+def test_tariff_list(tariffs, authenticated_client):
     """
     Проверяет, что список тарифов возвращается корректно по нужному эндоинту.
     """
-    tariff = tariff
+    tariffs = tariffs
     response = authenticated_client.get('/api/v1/tariffs/')
     assert response.status_code == 200
-    assert response.data == TariffSerializer([tariff], many=True).data
+    response_tariffs = response.data
+    expected_tariffs = TariffSerializer(tariffs, many=True).data
+    assert len(response_tariffs) == len(expected_tariffs)
+    for tarif in expected_tariffs:
+        assert tarif in response_tariffs
 
 
 @pytest.mark.django_db

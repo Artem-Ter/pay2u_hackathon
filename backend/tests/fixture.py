@@ -22,10 +22,23 @@ def authenticated_client(user):
 
 
 @pytest.fixture
+def subscriptions():
+    subscriptions = SubscriptionFactory.create_batch(2)
+    return subscriptions
+
+
+@pytest.fixture
 def subscription():
     subscription = SubscriptionFactory()
     TariffFactory.create_batch(2, subscription=subscription)
     return subscription
+
+
+@pytest.fixture
+def tariffs():
+    subscription = SubscriptionFactory()
+    tariffs = TariffFactory.create_batch(2, subscription=subscription)
+    return tariffs
 
 
 @pytest.fixture
