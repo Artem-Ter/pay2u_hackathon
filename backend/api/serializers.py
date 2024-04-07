@@ -7,6 +7,7 @@ from services.models import Subscription, Tariff, Transaction, UserTariff
 from users.models import User
 
 from .utils import calculate_cashback_amount
+from .month_translation import MONTHS
 
 
 class MySubscriptionSerializer(serializers.Serializer):
@@ -159,6 +160,7 @@ class CustomCurrentUserSerializer(serializers.Serializer):
 class UserTariffSerializer(serializers.ModelSerializer):
     tariff = serializers.StringRelatedField(read_only=True)
     user = serializers.PrimaryKeyRelatedField(read_only=True)
+    promo_code_period = serializers.SerializerMethodField()
 
     class Meta:
         model = UserTariff
@@ -171,3 +173,7 @@ class UserTariffSerializer(serializers.ModelSerializer):
                   'is_direct',
                   'promo_code',
                   'promo_code_period')
+
+    def get_promo_code_period(self, obj):
+        month = MONTHS.get(obj.promo_code_period.strftime('%B'))
+        return obj.promo_code_period.strftime(f'%d {month} %Y')
