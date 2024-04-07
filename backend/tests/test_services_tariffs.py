@@ -22,8 +22,8 @@ def test_subscription_list(subscriptions, authenticated_client):
     response_subscriptions = response.data
     expected_subscriptions = ServiceSerializer(subscriptions, many=True).data
     assert len(response_subscriptions) == len(expected_subscriptions)
-    for service in expected_subscriptions:
-        assert service in response_subscriptions
+    for item in expected_subscriptions:
+        assert item in response_subscriptions
 
 
 @pytest.mark.django_db
@@ -78,8 +78,8 @@ def test_tariff_list(tariffs, authenticated_client):
     response_tariffs = response.data
     expected_tariffs = TariffSerializer(tariffs, many=True).data
     assert len(response_tariffs) == len(expected_tariffs)
-    for tarif in expected_tariffs:
-        assert tarif in response_tariffs
+    for item in expected_tariffs:
+        assert item in response_tariffs
 
 
 @pytest.mark.django_db
