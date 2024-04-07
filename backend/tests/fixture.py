@@ -43,3 +43,10 @@ def user_tariff(user, tariff):
 @pytest.fixture
 def transaction(user_tariff):
     return TransactionFactory(user_tariff=user_tariff)
+
+
+@pytest.fixture
+def tariffs():
+    subscription = SubscriptionFactory()
+    tariffs = TariffFactory.create_batch(2, subscription=subscription)
+    return tariffs

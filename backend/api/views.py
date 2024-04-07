@@ -184,7 +184,7 @@ class TariffViewSet(viewsets.ReadOnlyModelViewSet):
             user_tariff=None,  # юзер тариф пока не создаем
             date=transaction_date,
             amount=tariff.price,
-            payment_status=simulate_payment_status())
+            payment_status=1)  # заглушка для презентациии
 
         # если оплата прошла, подписываем пользователя
         if transaction.payment_status == 1:
